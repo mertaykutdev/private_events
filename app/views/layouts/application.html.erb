@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>PrivateEvents</title>
+    <%= csrf_meta_tags %> <%= csp_meta_tag %>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <%= stylesheet_link_tag 'application', media: 'all',
+    'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application',
+    'data-turbolinks-track': 'reload' %>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+      crossorigin="anonymous"
+    />
+    </head>
+    <header>
+      <nav class="navbar" style="background-color: lightgrey; align-items:center">
+        <div class="navbar-start" style="display:flex; margin-left:1vw  ">
+          <%= link_to 'Events', events_path, class:"button", style:"margin-right:2px" %>
+          <%= link_to 'Users', users_path, class:"button",style:"margin-left:2px" %>
+        </div>
+        <div class="flash">
+          <br>
+          <% flash.each do |type, msg| %>
+            <% if type == "error" %>
+              <div class="navbar-item has-text-danger" padding-left: 1vw;">
+                <%= msg %>
+              </div>
+            <% else %>
+              <div class="navbar-item has-text-success" padding-left: 1vw;">
+                <%= msg %>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+        <div class="navbar-end">
+          <% unless current_user %>
+            <%= link_to 'Sign up', signup_path, class:"button is-primary", style:"margin:5px" %>
+            <%= link_to 'Login', login_path, class:"button is-light", style:"margin:5px" %>
+          <% end %>
+          <div class="container" style="padding: 0.4vw;">
+            <%= current_user&.username%>
+          </div>
+          <% if current_user %>
+            <%= (link_to 'Logout', logout_path, class:"button is-dark")  %>
+          <% end %>
+        </div>
+      </nav>
+    </header>
+    <div class="main">
+      <section class="section">
+        <body>
+          <%= yield %>
+        </body>
+      </section>
+      <footer class="footer">
+        <i class="fab fa-github fa-2x"> </i>
+        <a class="title" style="color: #3273dc;" href="https://github.com/mertaykutdev"
+        >Made by mertaykutdev</a
+      >
+      </footer>
+    </div>
+  </html>

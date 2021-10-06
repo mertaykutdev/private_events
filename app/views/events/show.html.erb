@@ -1,0 +1,50 @@
+<p>
+  <strong>Name: </strong>
+  <%= @event.name %>
+</p>
+<p>
+  <strong>Date: </strong>
+  <%= @event.date %>
+</p>
+<p>
+  <strong>Location: </strong>
+  <%= @event.location %>
+</p>
+<p>
+  <strong>Description: </strong>
+  <%= @event.description %>
+</p>
+<p>
+  <strong>Created by: </strong>
+  <%= @event.user.username%>
+</p>
+<p>
+  <%= (@event.private == 1) ? "Private": "Public" %> event
+</p>
+<table>
+  <thead>
+    <tr>
+      <th>Attendees</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @event.attendees.each do |attendee| %>
+      <tr>
+        <td><%= link_to attendee.username , user_path(attendee) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<br>
+<% if @event.date > Time.current%>
+  <%  unless current_user.in?(@event.attendees) || @event.private == 1%>
+    <%= button_to 'Attend', attend_path(user_id: current_user.id, event_id: @event.id), class: "button is-primary" %>
+  <% end %>
+  <%= link_to 'Invite', invite_path(event_id: @event.id), class:"button is-primary" if @event.user.username == current_user.username%>
+<% end %>
+<br>
+<br>
+<%= link_to 'Edit', edit_event_path(@event) %> |
+<%= link_to 'Destroy', @event, method: :delete, data: { confirm: 'Are you sure?' } %> |
+<%= link_to 'Back', events_path %>
